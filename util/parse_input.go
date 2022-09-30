@@ -21,3 +21,15 @@ func Parse_input_into_lines(input_file string) (input []string) {
 
 	return input
 }
+
+func Parse_single_line_input(input_file string) string {
+	f, err := os.Open(input_file)
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+
+	scanner := bufio.NewScanner(f)
+	scanner.Scan()
+	return scanner.Text()
+}
