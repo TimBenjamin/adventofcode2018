@@ -1,29 +1,13 @@
 package day_4
 
 import (
-	"bufio"
+	"adventofcode2018/util"
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
 )
 
 var input []string
-
-func get_input(input_file string) {
-	f, err := os.Open(input_file)
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-
-	scanner := bufio.NewScanner(f)
-	var line string
-	for scanner.Scan() {
-		line = scanner.Text()
-		input = append(input, line)
-	}
-}
 
 type TimeStamp struct {
 	original string
@@ -199,7 +183,7 @@ func part_2() (out int) {
 }
 
 func Call(part string, input_file string) string {
-	get_input(input_file)
+	input = util.Parse_input_into_lines(input_file)
 	var r int
 	if part == "1" {
 		r = part_1()
