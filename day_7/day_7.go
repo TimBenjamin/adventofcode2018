@@ -29,14 +29,6 @@ func get_dependencies() map[string][]string {
 		}
 	}
 
-	// Check:
-	// for step, requires := range dependencies {
-	// 	fmt.Printf("step %v requires...\n", step)
-	// 	for _, r := range requires {
-	// 		fmt.Printf("  %v\n", r)
-	// 	}
-	// }
-
 	return dependencies
 }
 
