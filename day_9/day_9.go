@@ -14,7 +14,7 @@ func play() {
 	current_marble := 0
 	marble_counter := 0
 	current_marble_position := 0
-	//for i := 0; i < 30; i++ {
+
 	for {
 		current_player += 1
 		if current_player >= num_players {
