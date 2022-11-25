@@ -9,7 +9,7 @@ import (
 
 var input string
 
-func part_1() int {
+func partOne() int {
 	// recursively until there are no changes
 	// remove all pairs of lowercase and uppercase that are next to each other
 	// e.g. Aa or Bb or cC
@@ -23,10 +23,10 @@ func part_1() int {
 			j := strings.Join(s, "")
 			combo = strings.ToUpper(alpha[i:i+1]) + alpha[i:i+1]
 			s = strings.Split(j, combo)
-			new_input := strings.Join(s, "")
-			if len(new_input) != len(input) {
+			newInput := strings.Join(s, "")
+			if len(newInput) != len(input) {
 				changed = true
-				input = new_input
+				input = newInput
 			}
 		}
 		if changed {
@@ -51,10 +51,10 @@ func _reduce(sequence string) string {
 			j := strings.Join(s, "")
 			combo = strings.ToUpper(alpha[i:i+1]) + alpha[i:i+1]
 			s = strings.Split(j, combo)
-			new_input := strings.Join(s, "")
-			if len(new_input) != len(sequence) {
+			newInput := strings.Join(s, "")
+			if len(newInput) != len(sequence) {
 				changed = true
-				sequence = new_input
+				sequence = newInput
 			}
 		}
 		if changed {
@@ -65,7 +65,7 @@ func _reduce(sequence string) string {
 	}
 }
 
-func part_2() int {
+func partTwo() int {
 	// This time we want to reduce all a/A, see what that comes to, compare to removing b/B, etc
 	best := 100000
 	alpha := "abcdefghijklmnopqrstuvwxyz"
@@ -73,8 +73,8 @@ func part_2() int {
 		letter := alpha[i : i+1]
 		s := strings.Split(input, letter)
 		j := strings.Join(s, "")
-		uc_letter := strings.ToUpper(letter)
-		s = strings.Split(j, uc_letter)
+		ucLetter := strings.ToUpper(letter)
+		s = strings.Split(j, ucLetter)
 		j = strings.Join(s, "")
 		res := _reduce(j)
 		if len(res) < best {
@@ -90,9 +90,9 @@ func Call(part string, inputFile string) string {
 	input = util.ParseSingleLineInput(inputFile)
 	var r int
 	if part == "1" {
-		r = part_1()
+		r = partOne()
 	} else {
-		r = part_2()
+		r = partTwo()
 	}
 	return strconv.Itoa(r)
 }

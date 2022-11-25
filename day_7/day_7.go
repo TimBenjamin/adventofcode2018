@@ -87,7 +87,7 @@ func calculateStepTime(step string) int {
 	return 60 + (int(step[0])) - 64
 }
 
-func part_2() int {
+func partTwo() int {
 	dependencies := getDependencies()
 
 	// each worker will have a current step, and a time remaining until that step is complete, and status of working
@@ -175,7 +175,7 @@ func Call(part string, inputFile string) string {
 	if part == "1" {
 		r = partOne()
 	} else {
-		r = part_2()
+		r = partTwo()
 	}
 	return strconv.Itoa(r)
 }
