@@ -10,7 +10,7 @@ import (
 
 var input []string
 
-func get_dependencies() map[string][]string {
+func getDependencies() map[string][]string {
 	dependencies := map[string][]string{}
 	for _, instruction := range input {
 		step := string(instruction[36])
@@ -34,12 +34,12 @@ func get_dependencies() map[string][]string {
 
 // this function removes a step from the dependencies map
 // it also removes that step from each other step's dependency list
-func remove_dependency(old_dependencies map[string][]string, step string) map[string][]string {
+func removeDependency(oldDependencies map[string][]string, step string) map[string][]string {
 	dependencies := map[string][]string{}
-	for s, old_deps := range old_dependencies {
+	for s, oldDeps := range oldDependencies {
 		if s != step {
 			deps := []string{}
-			for _, d := range old_deps {
+			for _, d := range oldDeps {
 				if d != step {
 					deps = append(deps, d)
 				}
@@ -50,8 +50,8 @@ func remove_dependency(old_dependencies map[string][]string, step string) map[st
 	return dependencies
 }
 
-func part_1() int {
-	dependencies := get_dependencies()
+func partOne() int {
+	dependencies := getDependencies()
 	solution := []string{}
 
 	for {
@@ -75,7 +75,7 @@ func part_1() int {
 		solution = append(solution, found[0])
 
 		// remove the step from the dependencies list
-		dependencies = remove_dependency(dependencies, found[0])
+		dependencies = removeDependency(dependencies, found[0])
 	}
 
 	fmt.Printf("Solution: %v\n", strings.Join(solution, ""))
@@ -83,18 +83,18 @@ func part_1() int {
 }
 
 // how long a step is going to take to complete = 60 + (A=1,...)
-func calculate_step_time(step string) int {
+func calculateStepTime(step string) int {
 	return 60 + (int(step[0])) - 64
 }
 
 func part_2() int {
-	dependencies := get_dependencies()
+	dependencies := getDependencies()
 
 	// each worker will have a current step, and a time remaining until that step is complete, and status of working
 	type Worker struct {
-		step           string
-		time_remaining int
-		working        bool
+		step          string
+		timeRemaining int
+		working       bool
 	}
 
 	// set up the required number of workers
@@ -102,9 +102,9 @@ func part_2() int {
 	workers := []Worker{}
 	for i := 0; i < NUM_WORKERS; i++ {
 		workers = append(workers, Worker{
-			step:           "",
-			time_remaining: 0,
-			working:        false,
+			step:          "",
+			timeRemaining: 0,
+			working:       false,
 		})
 	}
 
@@ -113,24 +113,24 @@ func part_2() int {
 	for {
 		// increment the clock at the end, after we check if there is any work being done
 
-		is_there_a_worker_working := false
+		isThereAWorkerWorking := false
 		// each worker that is working -> reduce time by 1, check if they are still working
 		for w := range workers {
 			if workers[w].working {
-				workers[w].time_remaining -= 1
+				workers[w].timeRemaining -= 1
 				// if the time is 0, remove that work, and remove the dependency from the main dependencies list
-				if workers[w].time_remaining == 0 {
-					dependencies = remove_dependency(dependencies, workers[w].step)
+				if workers[w].timeRemaining == 0 {
+					dependencies = removeDependency(dependencies, workers[w].step)
 					workers[w].working = false
 					workers[w].step = ""
 				} else {
-					is_there_a_worker_working = true
+					isThereAWorkerWorking = true
 				}
 			}
 		}
 
 		// if there are no workers working, and no steps left in the dependencies list, we are finished!
-		if !is_there_a_worker_working && len(dependencies) == 0 {
+		if !isThereAWorkerWorking && len(dependencies) == 0 {
 			break
 		}
 
@@ -140,19 +140,19 @@ func part_2() int {
 		for step, deps := range dependencies {
 			if len(deps) == 0 {
 				// is the step already being worked on?
-				step_in_progress := false
+				stepInProgress := false
 				for w := range workers {
 					if workers[w].step == step {
-						step_in_progress = true
+						stepInProgress = true
 						break
 					}
 				}
-				if !step_in_progress {
+				if !stepInProgress {
 					// assign the step to an available worker
 					for w := range workers {
 						if !workers[w].working {
 							workers[w].step = step
-							workers[w].time_remaining = calculate_step_time(step)
+							workers[w].timeRemaining = calculateStepTime(step)
 							workers[w].working = true
 							break
 						}
@@ -169,11 +169,11 @@ func part_2() int {
 	return clock
 }
 
-func Call(part string, input_file string) string {
-	input = util.Parse_input_into_lines(input_file)
+func Call(part string, inputFile string) string {
+	input = util.ParseInputIntoLines(inputFile)
 	var r int
 	if part == "1" {
-		r = part_1()
+		r = partOne()
 	} else {
 		r = part_2()
 	}

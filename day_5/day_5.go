@@ -86,8 +86,8 @@ func part_2() int {
 	return best
 }
 
-func Call(part string, input_file string) string {
-	input = util.Parse_single_line_input(input_file)
+func Call(part string, inputFile string) string {
+	input = util.ParseSingleLineInput(inputFile)
 	var r int
 	if part == "1" {
 		r = part_1()

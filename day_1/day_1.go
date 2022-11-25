@@ -7,7 +7,7 @@ import (
 
 var input []string
 
-func part_1() (out int) {
+func partOne() (out int) {
 	for _, value := range input {
 		sign := value[0]
 		num := value[1:]
@@ -22,7 +22,7 @@ func part_1() (out int) {
 	return
 }
 
-func part_2() (out int) {
+func partTwo() (out int) {
 	// repeat the loop through the input
 	// keep applying the delta to produce a result
 	// stop when we have seen the result before, and return it
@@ -47,13 +47,13 @@ func part_2() (out int) {
 	}
 }
 
-func Call(part string, input_file string) string {
-	input = util.Parse_input_into_lines(input_file)
+func Call(part string, inputFile string) string {
+	input = util.ParseInputIntoLines(inputFile)
 	var r int
 	if part == "1" {
-		r = part_1()
+		r = partOne()
 	} else {
-		r = part_2()
+		r = partTwo()
 	}
 	return strconv.Itoa(r)
 }

@@ -9,7 +9,7 @@ import (
 
 var input []string
 
-func part_1() int {
+func partOne() int {
 	// count how many have exactly 2 of any letter
 	// count how many have exactly 3 of any letter
 	// multiply the two numbers
@@ -46,7 +46,7 @@ func part_1() int {
 	return count_2 * count_3
 }
 
-func part_2() (out int) {
+func partTwo() (out int) {
 	// find two strings that differ only by one character
 	// abc = 1a + 2b + 3c
 	for idx_1, str_1 := range input {
@@ -79,13 +79,13 @@ func part_2() (out int) {
 	return
 }
 
-func Call(part string, input_file string) string {
-	input = util.Parse_input_into_lines(input_file)
+func Call(part string, inputFile string) string {
+	input = util.ParseInputIntoLines(inputFile)
 	var r int
 	if part == "1" {
-		r = part_1()
+		r = partOne()
 	} else {
-		r = part_2()
+		r = partTwo()
 	}
 	return strconv.Itoa(r)
 }

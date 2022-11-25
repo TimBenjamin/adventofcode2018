@@ -9,7 +9,7 @@ import (
 
 var input []string
 
-func part_1() int {
+func partOne() int {
 
 	// any coordinate that does not have another coordinate further NSEW can be disregarded
 	// as it will lead to an infinite area
@@ -38,38 +38,38 @@ func part_1() int {
 	// and nothing higher than 9 in the y-axis
 
 	coords := [][]int{}
-	x_min := 1000
-	y_min := 1000
-	x_max := 0
-	y_max := 0
+	xMin := 1000
+	yMin := 1000
+	xMax := 0
+	yMax := 0
 	for _, line := range input {
 		pair := strings.Split(line, ", ")
 		x, _ := strconv.Atoi(pair[0])
 		y, _ := strconv.Atoi(pair[1])
 		coords = append(coords, []int{x, y})
-		if x < x_min {
-			x_min = x
+		if x < xMin {
+			xMin = x
 		}
-		if x > x_max {
-			x_max = x
+		if x > xMax {
+			xMax = x
 		}
-		if y < y_min {
-			y_min = y
+		if y < yMin {
+			yMin = y
 		}
-		if y > y_max {
-			y_max = y
+		if y > yMax {
+			yMax = y
 		}
 	}
 
-	reduced_coords := [][]int{}
+	reducedCoords := [][]int{}
 	for _, coord := range coords {
-		if coord[0] > x_min && coord[0] < x_max && coord[1] > y_min && coord[1] < y_max {
-			reduced_coords = append(reduced_coords, coord)
+		if coord[0] > xMin && coord[0] < xMax && coord[1] > yMin && coord[1] < yMax {
+			reducedCoords = append(reducedCoords, coord)
 		}
 	}
 
 	// The reduced_coords are the ones that do not lead to an infinite area
-	for _, coord := range reduced_coords {
+	for _, coord := range reducedCoords {
 		fmt.Printf("x: %v / y: %v\n", coord[0], coord[1])
 	}
 
@@ -84,8 +84,8 @@ func part_1() int {
 	// However rather than saving a letter, I'll save the coords of that letter (I am not using letters)
 
 	distances := map[string]string{}
-	for i := x_min; i <= x_max; i++ {
-		for j := y_min; j <= y_max; j++ {
+	for i := xMin; i <= xMax; i++ {
+		for j := yMin; j <= yMax; j++ {
 			// compute distance from each coord to (i,j)
 			// then the least is stored like:
 			// distances["i,j"] = "coord[0],coord[1]"
@@ -95,19 +95,19 @@ func part_1() int {
 				continue
 			}
 
-			lowest_distance := 1000
+			lowestDistance := 1000
 			for _, coord := range coords {
 				if i == coord[0] && j == coord[1] {
 					// not interested in the coord itself except to count it
 					distances[fmt.Sprintf("%d,%d", i, j)] = fmt.Sprintf("%d,%d", coord[0], coord[1])
 					break
 				}
-				distance := _manhattan(i, j, coord[0], coord[1])
-				if distance < lowest_distance {
+				distance := manhattan(i, j, coord[0], coord[1])
+				if distance < lowestDistance {
 					// new lowest distance to save
 					distances[fmt.Sprintf("%d,%d", i, j)] = fmt.Sprintf("%d,%d", coord[0], coord[1])
-					lowest_distance = distance
-				} else if distance == lowest_distance {
+					lowestDistance = distance
+				} else if distance == lowestDistance {
 					// it's a tie, dot it - but we carry on as we might get a lower distance that is not a tie!
 					distances[fmt.Sprintf("%d,%d", i, j)] = "."
 				}
@@ -116,49 +116,49 @@ func part_1() int {
 	}
 
 	// Now we can look at reduced_coords and see which one gives the bigger "area":
-	biggest_area := 0
-	for _, coord := range reduced_coords {
+	biggestArea := 0
+	for _, coord := range reducedCoords {
 		c := fmt.Sprintf("%d,%d", coord[0], coord[1])
 		fmt.Printf("Calculate area for %v:\n", c)
-		c_score := 0
+		cScore := 0
 		for _, b := range distances {
 			if b == c {
-				c_score++
+				cScore++
 			}
 		}
-		fmt.Printf("  score for %v is: %v\n", c, c_score)
-		if c_score > biggest_area {
-			biggest_area = c_score
+		fmt.Printf("  score for %v is: %v\n", c, cScore)
+		if cScore > biggestArea {
+			biggestArea = cScore
 		}
 	}
 
-	return biggest_area
+	return biggestArea
 }
 
-func part_2() int {
+func partTwo() int {
 	// What is the size of the region containing all locations which have a total distance to all given coordinates of less than 10000?
 
 	coords := [][]int{}
-	x_min := 1000
-	y_min := 1000
-	x_max := 0
-	y_max := 0
+	xMin := 1000
+	yMin := 1000
+	xMax := 0
+	yMax := 0
 	for _, line := range input {
 		pair := strings.Split(line, ", ")
 		x, _ := strconv.Atoi(pair[0])
 		y, _ := strconv.Atoi(pair[1])
 		coords = append(coords, []int{x, y})
-		if x < x_min {
-			x_min = x
+		if x < xMin {
+			xMin = x
 		}
-		if x > x_max {
-			x_max = x
+		if x > xMax {
+			xMax = x
 		}
-		if y < y_min {
-			y_min = y
+		if y < yMin {
+			yMin = y
 		}
-		if y > y_max {
-			y_max = y
+		if y > yMax {
+			yMax = y
 		}
 	}
 
@@ -166,11 +166,11 @@ func part_2() int {
 	// And work out the sum of Manhattan distances from i,j to each of the coords
 
 	distances := map[string]int{}
-	for i := x_min; i <= x_max; i++ {
-		for j := y_min; j <= y_max; j++ {
+	for i := xMin; i <= xMax; i++ {
+		for j := yMin; j <= yMax; j++ {
 			total := 0
 			for _, coord := range coords {
-				total += _manhattan(i, j, coord[0], coord[1])
+				total += manhattan(i, j, coord[0], coord[1])
 			}
 			distances[fmt.Sprintf("%d,%d", i, j)] = total
 		}
@@ -186,7 +186,7 @@ func part_2() int {
 	return count
 }
 
-func _manhattan(x1 int, y1 int, x2 int, y2 int) int {
+func manhattan(x1 int, y1 int, x2 int, y2 int) int {
 	d1 := x1 - x2
 	if d1 < 0 {
 		d1 = -d1
@@ -198,13 +198,13 @@ func _manhattan(x1 int, y1 int, x2 int, y2 int) int {
 	return d1 + d2
 }
 
-func Call(part string, input_file string) string {
-	input = util.Parse_input_into_lines(input_file)
+func Call(part string, inputFile string) string {
+	input = util.ParseInputIntoLines(inputFile)
 	var r int
 	if part == "1" {
-		r = part_1()
+		r = partOne()
 	} else {
-		r = part_2()
+		r = partTwo()
 	}
 	return strconv.Itoa(r)
 }

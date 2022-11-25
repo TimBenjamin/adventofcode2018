@@ -7,8 +7,8 @@ import (
 	"strings"
 )
 
-func Parse_input_into_lines(input_file string) (input []string) {
-	f, err := os.Open(input_file)
+func ParseInputIntoLines(inputFile string) (input []string) {
+	f, err := os.Open(inputFile)
 	if err != nil {
 		panic(err)
 	}
@@ -23,8 +23,8 @@ func Parse_input_into_lines(input_file string) (input []string) {
 	return input
 }
 
-func Parse_single_line_input(input_file string) string {
-	f, err := os.Open(input_file)
+func ParseSingleLineInput(inputFile string) string {
+	f, err := os.Open(inputFile)
 	if err != nil {
 		panic(err)
 	}
@@ -34,8 +34,8 @@ func Parse_single_line_input(input_file string) string {
 	return scanner.Text()
 }
 
-func Parse_single_line_input_into_ints(input_file string) []int {
-	s := Parse_single_line_input(input_file)
+func ParseSingleLineInputIntoInts(inputFile string) []int {
+	s := ParseSingleLineInput(inputFile)
 	words := strings.Fields(s)
 	nums := []int{}
 	for _, w := range words {
