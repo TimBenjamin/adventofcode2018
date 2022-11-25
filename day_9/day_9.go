@@ -16,10 +16,7 @@ func play() {
 	current_marble_position := 0
 
 	for {
-		current_player += 1
-		if current_player >= num_players {
-			current_player = 0
-		}
+		current_player = (current_player + 1) % num_players
 		new_marble := marble_counter + 1
 		marble_counter += 1
 		if new_marble%23 == 0 {
@@ -38,18 +35,16 @@ func play() {
 				current_marble_position = remove_marble_position
 			}
 			//fmt.Printf("current marble is now: %v\n", current_marble)
-			_marbles := []int{}
-			_marbles = append(_marbles, marbles[0:remove_marble_position]...)
-			_marbles = append(_marbles, marbles[remove_marble_position+1:]...)
-			marbles = _marbles
+			marbles = append(marbles[0:remove_marble_position], marbles[remove_marble_position+1:]...)
 		} else {
 			new_marble_position := (current_marble_position + 2) % len(marbles)
-			_marbles := []int{}
-			_marbles = append(_marbles, marbles[0:new_marble_position]...)
-			_marbles = append(_marbles, new_marble)
-			current_marble_position = len(_marbles) - 1
-			_marbles = append(_marbles, marbles[new_marble_position:]...)
-			marbles = _marbles
+			if new_marble_position == 0 {
+				marbles = append([]int{new_marble}, marbles...)
+			} else {
+				marbles = append(marbles[0:new_marble_position], marbles[new_marble_position-1:]...)
+				marbles[new_marble_position] = new_marble
+			}
+			current_marble_position = new_marble_position
 			current_marble = new_marble
 		}
 		//fmt.Printf("[%v] %v\n", current_player+1, marbles)
