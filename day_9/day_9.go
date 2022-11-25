@@ -11,16 +11,13 @@ func play() {
 	scores := make([]int, num_players)
 	current_player := -1
 	marbles := []int{0}
-	current_marble := 0
-	marble_counter := 0
+	new_marble := 0
 	current_marble_position := 0
 
-	for {
+	for i := 0; i <= last_marble_value; i++ {
 		current_player = (current_player + 1) % num_players
-		new_marble := marble_counter + 1
-		marble_counter += 1
+		new_marble++
 		if new_marble%23 == 0 {
-			//fmt.Printf("!! new marble %v is a multiple of 23!\n", new_marble)
 			scores[current_player] += new_marble
 			remove_marble_position := current_marble_position - 7
 			if remove_marble_position < 0 {
@@ -28,13 +25,10 @@ func play() {
 			}
 			scores[current_player] += marbles[remove_marble_position]
 			if remove_marble_position == len(marbles)-1 {
-				current_marble = marbles[0]
 				current_marble_position = 0
 			} else {
-				current_marble = marbles[remove_marble_position+1]
 				current_marble_position = remove_marble_position
 			}
-			//fmt.Printf("current marble is now: %v\n", current_marble)
 			marbles = append(marbles[0:remove_marble_position], marbles[remove_marble_position+1:]...)
 		} else {
 			new_marble_position := (current_marble_position + 2) % len(marbles)
@@ -45,25 +39,20 @@ func play() {
 				marbles[new_marble_position] = new_marble
 			}
 			current_marble_position = new_marble_position
-			current_marble = new_marble
-		}
-		//fmt.Printf("[%v] %v\n", current_player+1, marbles)
-		if current_marble == last_marble_value {
-			//fmt.Printf("Last marble used - scores are: %v\n", scores)
-			high_score := 0
-			winner := 0
-			for k := 0; k < len(scores); k++ {
-				if scores[k] > high_score {
-					high_score = scores[k]
-					winner = k + 1
-				}
-			}
-			fmt.Printf("Winner is player %v with score of %v\n", winner, high_score)
-			break
-		}
-		// NB, when the new marble looks like it goes at the end in the example, I'm putting it at the beginning
+
+		} // NB, when the new marble looks like it goes at the end in the example, I'm putting it at the beginning
 		// This should be OK as it's a circular structure
 	}
+	//fmt.Printf("Last marble used - scores are: %v\n", scores)
+	high_score := 0
+	winner := 0
+	for k := 0; k < len(scores); k++ {
+		if scores[k] > high_score {
+			high_score = scores[k]
+			winner = k + 1
+		}
+	}
+	fmt.Printf("Winner is player %v with score of %v\n", winner, high_score)
 }
 
 func part_1() int {
