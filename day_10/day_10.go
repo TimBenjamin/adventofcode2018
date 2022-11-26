@@ -62,7 +62,7 @@ func setMinMax() {
 			maxY = point.posY
 		}
 	}
-	fmt.Printf("minX: %v, maxX: %v, minY: %v, maxY: %v\n", minX, maxX, minY, maxY)
+	//fmt.Printf("minX: %v, maxX: %v, minY: %v, maxY: %v\n", minX, maxX, minY, maxY)
 }
 
 func visualisePoints() {
@@ -70,21 +70,13 @@ func visualisePoints() {
 	setMinMax()
 	sizeY := maxY - minY + 1
 	sizeX := maxX - minX + 1
-	fmt.Printf("sizeY: %v, sizeX: %v\n", sizeY, sizeX)
 	grid := make([][]string, sizeY)
-	fmt.Println("makegrid")
 	for i := range grid {
 		grid[i] = make([]string, sizeX)
 		for j := range grid[i] {
 			grid[i][j] = "."
 		}
 	}
-	fmt.Println("done initialising grid")
-	// -15 is the min
-	// want that to be 0
-	// x += minX
-	// -15 => 0
-	// 4 => 19
 	adjX := -minX
 	adjY := -minY
 	for _, point := range points {
@@ -92,11 +84,9 @@ func visualisePoints() {
 		y := point.posY + adjY
 		grid[y][x] = "#"
 	}
-	fmt.Println("done populating grid")
 	for _, row := range grid {
 		fmt.Printf("%v\n", row)
 	}
-	fmt.Println("-----------------------")
 }
 
 // look for when the difference between min and max Y is least?
@@ -105,10 +95,6 @@ var minDiffY int
 func checkForCondensedPoints() {
 	setMinMax()
 	diffY := maxY - minY
-	diffX := maxX - minX
-	fmt.Printf("diffY: %v\n", diffY)
-	fmt.Printf("diffX: %v\n", diffX)
-	fmt.Println("--------")
 	if diffY < minDiffY {
 		minDiffY = diffY
 	}
@@ -117,17 +103,34 @@ func checkForCondensedPoints() {
 func partOne() int {
 	minDiffY = 100000
 	points := parseInput()
-	for i := 0; i < numLines; i++ {
+	for i := 0; i < 250000; i++ {
 		for p := range points {
 			points[p].Move()
 		}
 		checkForCondensedPoints()
+		if minDiffY < 140 { // this number found by induction ...
+			visualisePoints()
+			break
+		}
 	}
 	fmt.Printf("min diff Y: %v\n", minDiffY)
 	return 0
 }
 
 func partTwo() int {
+	count := 0
+	minDiffY = 100000
+	points := parseInput()
+	for i := 0; i < 250000; i++ {
+		count++
+		for p := range points {
+			points[p].Move()
+		}
+		checkForCondensedPoints()
+		if minDiffY < 140 { // this number found by induction ...
+			return count
+		}
+	}
 	return 0
 }
 
