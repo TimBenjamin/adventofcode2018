@@ -19,15 +19,21 @@ func (point *Point) Move() {
 	point.posY += point.velocityY
 }
 
+func (point *Point) MoveBack() {
+	point.posX -= point.velocityX
+	point.posY -= point.velocityY
+}
+
 var points []Point
 var minX int
 var maxX int
 var minY int
 var maxY int
-var numLines int
+
+// To solve this I will look for when the difference between min and max Y is least
+var minDiffY int
 
 func parseInput() []Point {
-	numLines = len(input)
 	for _, line := range input {
 		point := Point{}
 		// position=< 9,  1> velocity=< 0,  2>
@@ -40,6 +46,7 @@ func parseInput() []Point {
 		points = append(points, point)
 	}
 	setMinMax()
+	minDiffY = maxY - minY
 	return points
 }
 
@@ -62,7 +69,6 @@ func setMinMax() {
 			maxY = point.posY
 		}
 	}
-	//fmt.Printf("minX: %v, maxX: %v, minY: %v, maxY: %v\n", minX, maxX, minY, maxY)
 }
 
 func visualisePoints() {
@@ -89,9 +95,6 @@ func visualisePoints() {
 	}
 }
 
-// look for when the difference between min and max Y is least?
-var minDiffY int
-
 func checkForCondensedPoints() {
 	setMinMax()
 	diffY := maxY - minY
@@ -101,14 +104,17 @@ func checkForCondensedPoints() {
 }
 
 func partOne() int {
-	minDiffY = 100000
 	points := parseInput()
-	for i := 0; i < 250000; i++ {
+	// need to keep iterating until minDiffY hits a minimum and starts increasing again.
+	for {
 		for p := range points {
 			points[p].Move()
 		}
 		checkForCondensedPoints()
-		if minDiffY < 140 { // this number found by induction ...
+		if (maxY - minY) > minDiffY {
+			for p := range points {
+				points[p].MoveBack()
+			}
 			visualisePoints()
 			break
 		}
@@ -122,14 +128,14 @@ func partTwo() int {
 	minDiffY = 100000
 	points := parseInput()
 	for i := 0; i < 250000; i++ {
-		count++
 		for p := range points {
 			points[p].Move()
 		}
 		checkForCondensedPoints()
-		if minDiffY < 140 { // this number found by induction ...
+		if (maxY - minY) > minDiffY {
 			return count
 		}
+		count++
 	}
 	return 0
 }
