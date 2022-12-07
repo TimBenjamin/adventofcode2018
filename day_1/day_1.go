@@ -11,8 +11,7 @@ func partOne() (out int) {
 	for _, value := range input {
 		sign := value[0]
 		num := value[1:]
-		var amt int
-		amt, _ = strconv.Atoi(num)
+		amt, _ := strconv.Atoi(num)
 		if sign == '-' {
 			out -= amt
 		} else {
@@ -31,8 +30,7 @@ func partTwo() (out int) {
 		for _, value := range input {
 			sign := value[0]
 			num := value[1:]
-			var amt int
-			amt, _ = strconv.Atoi(num)
+			amt, _ := strconv.Atoi(num)
 			if sign == '-' {
 				out -= amt
 			} else {
